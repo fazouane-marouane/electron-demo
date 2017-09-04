@@ -50,9 +50,15 @@
   version "8.0.26"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.26.tgz#4d58be925306fd22b1141085535a0268b8beb189"
 
-"@types/react-dom@^0.14.20":
-  version "0.14.23"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-0.14.23.tgz#cecfcfad754b4c2765fe5d29b81b301889ad6c2e"
+"@types/react-dom@^15.5.4":
+  version "15.5.4"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-15.5.4.tgz#3f75ba86a2ce9a7d1d9e7d1ee3f186f3a9652d8f"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-hot-loader@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-hot-loader/-/react-hot-loader-3.0.4.tgz#7fc081509830c64218d8a99a865e2fb4a94572ad"
   dependencies:
     "@types/react" "*"
 
@@ -60,9 +66,9 @@
   version "16.0.5"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.5.tgz#d713cf67cc211dea20463d2a0b66005c22070c4b"
 
-"@types/react@^0.14.55":
-  version "0.14.57"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-0.14.57.tgz#1878a8654fafdd1d381b8457292b6433498c5b62"
+"@types/react@^15.5.4":
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.6.2.tgz#2c8495aa853cb37591d0046e9afe544fb837c612"
 
 abab@^1.0.0:
   version "1.0.3"
@@ -2070,6 +2076,12 @@ macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
 
+macos-alias@^0.2.11:
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/macos-alias/-/macos-alias-0.2.11.tgz#feeea6c13ba119814a43fc43c470b31e59ef718a"
+  dependencies:
+    nan "^2.4.0"
+
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
@@ -2154,6 +2166,10 @@ ms@0.7.1:
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+
+nan@^2.4.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.7.0.tgz#d95bf721ec877e08db276ed3fc6eb78f9083ad46"
 
 nib@^1.1.2:
   version "1.1.2"
@@ -2652,7 +2668,7 @@ react-deep-force-update@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.1.1.tgz#8ea4263cd6455a050b37445b3f08fd839d86e909"
 
-react-dom@^15.4.1:
+react-dom@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
   dependencies:
@@ -2661,7 +2677,7 @@ react-dom@^15.4.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-hot-loader@^3.0.0-beta.6:
+react-hot-loader@^3.0.0-beta.7:
   version "3.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-3.0.0-beta.7.tgz#d5847b8165d731c4d5b30d86d5d4716227a0fa83"
   dependencies:
@@ -2678,7 +2694,7 @@ react-proxy@^3.0.0-alpha.0:
   dependencies:
     lodash "^4.6.1"
 
-react@^15.4.1:
+react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:
@@ -3265,13 +3281,9 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@>=1.6:
+typescript@>=1.6, typescript@~2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
-
-typescript@~2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.2.tgz#606022508479b55ffa368b58fee963a03dfd7b0c"
 
 ua-parser-js@^0.7.9:
   version "0.7.14"

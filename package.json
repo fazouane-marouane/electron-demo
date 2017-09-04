@@ -3,7 +3,7 @@
   "productName": "stockmanager",
   "version": "1.0.0",
   "description": "My Electron application description",
-  "main": "src/index.ts",
+  "main": "src/index.main.ts",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -18,24 +18,41 @@
     "forge": {
       "make_targets": {
         "win32": [
-          "squirrel"
+          "squirrel",
+          "zip"
         ],
         "darwin": [
+          "dmg",
           "zip"
         ],
         "linux": [
           "deb",
-          "rpm"
+          "rpm",
+          "zip"
         ]
       },
       "electronPackagerConfig": {
         "packageManager": "yarn"
       },
       "electronWinstallerConfig": {
-        "name": "stockmanager"
+        "name": "stockmanager",
+        "authors": "PracticalJs",
+        "exe": "myapp.exe"
       },
       "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
+      "electronInstallerDMG": {
+        "format": "ULFO"
+      },
+      "electronInstallerRedhat": {
+        "name": "stockmanager",
+        "license": "MIT",
+        "group": "toto",
+        "description": "toto",
+        "productDescription": "toto",
+        "categories": [
+          "Productivity"
+        ]
+      },
       "github_repository": {
         "owner": "",
         "name": ""
@@ -47,20 +64,22 @@
     }
   },
   "dependencies": {
-    "@types/electron": "^1.4.30",
-    "@types/electron-devtools-installer": "^2.0.2",
-    "@types/react": "^0.14.55",
-    "@types/react-dom": "^0.14.20",
     "electron-compile": "^6.4.1",
     "electron-devtools-installer": "^2.0.1",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
-    "react-hot-loader": "^3.0.0-beta.6",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "tslib": "^1.4.0"
   },
   "devDependencies": {
+    "@types/electron": "^1.4.30",
+    "@types/electron-devtools-installer": "^2.0.2",
+    "@types/react": "^15.5.4",
+    "@types/react-dom": "^15.5.4",
+    "@types/react-hot-loader": "^3.0.4",
     "electron-prebuilt-compile": "1.7.5",
+    "macos-alias": "^0.2.11",
+    "react-hot-loader": "^3.0.0-beta.7",
     "tslint": "^5.1.0",
-    "typescript": "~2.2.2"
+    "typescript": "~2.5.2"
   }
 }

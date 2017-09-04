@@ -17,8 +17,19 @@
     "moduleResolution": "node",
     "pretty": true,
     "target": "es2015",
-    "jsx": "react"
+    "jsx": "react",
+    "typeRoots": ["./node_modules/@types/"]
   },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "out",
+    "make",
+    "dist"
+  ],
+  "compileOnSave": false,
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
