@@ -20,7 +20,7 @@ export class Tabs extends React.Component<any, any> {
       .map((key, index) => this.renderItem(index, key, this.props.children[key]));
   }
 
-  renderItem(key, title, content) {
+  renderItem(key: string | number, title: string, content: React.Component<any, any>) {
     return (
       <SegmentedControlItem
         key={key}

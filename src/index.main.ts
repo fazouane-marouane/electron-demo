@@ -1,10 +1,19 @@
 import { app, BrowserWindow } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, REACT_PERF } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
+import { toto } from './services/sql';
+import {ipcMain} from'electron';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow | null = null;
+
+ipcMain.on('log', function (_: any, args: any) {
+  if (mainWindow) {
+    mainWindow.webContents.send('log', args);
+  }
+  console.log.apply(null, args);
+});
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
@@ -28,6 +37,10 @@ const createWindow = async () => {
     await installExtension(REDUX_DEVTOOLS);
     await installExtension(REACT_PERF);
     mainWindow.webContents.openDevTools();
+    mainWindow.webContents.on('devtools-opened', toto);
+    mainWindow.webContents.once('devtools-focused', () => {
+      mainWindow!.webContents.focus();
+    });
   }
 
   // Emitted when the window is closed.
@@ -59,6 +72,7 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+
 });
 
 // In this file you can include the rest of your app's specific main process
