@@ -64,11 +64,15 @@
     }
   },
   "dependencies": {
+    "devtron": "^1.4.0",
     "electron-compile": "^6.4.1",
     "electron-devtools-installer": "^2.0.1",
+    "inversify": "^4.3.0",
+    "inversify-inject-decorators": "^3.0.1",
     "react": "^15.6.1",
     "react-desktop": "^0.3.1",
     "react-dom": "^15.6.1",
+    "reflect-metadata": "^0.1.10",
     "sqlite": "^2.8.0",
     "tslib": "^1.4.0"
   },

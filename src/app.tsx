@@ -3,7 +3,6 @@ import { Text } from 'react-desktop/macOs';
 import { Tabs } from './components/Tabs';
 
 export class App extends React.Component<undefined, undefined> {
-
   render() {
     return (
       <Tabs>

@@ -1,19 +1,15 @@
 import { app, BrowserWindow } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, REACT_PERF } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
-import { toto } from './services/sql';
-import {ipcMain} from'electron';
+import {install as installDevtron} from 'devtron';
+import { getService, ServicesIDs, ILogger } from './services';
+// tslint:disable-next-line:no-var-requires no-require-imports
+require('./services'); // init services
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow | null = null;
-
-ipcMain.on('log', function (_: any, args: any) {
-  if (mainWindow) {
-    mainWindow.webContents.send('log', args);
-  }
-  console.log.apply(null, args);
-});
+const logger = getService<ILogger>(ServicesIDs.LoggerID);
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
@@ -37,7 +33,12 @@ const createWindow = async () => {
     await installExtension(REDUX_DEVTOOLS);
     await installExtension(REACT_PERF);
     mainWindow.webContents.openDevTools();
-    mainWindow.webContents.on('devtools-opened', toto);
+    mainWindow.webContents.on('devtools-opened', () => {
+      installDevtron();
+    });
+    mainWindow.on('moved', () => {
+      logger.info('The window\'s moved', mainWindow!.getPosition());
+    });
     mainWindow.webContents.once('devtools-focused', () => {
       mainWindow!.webContents.focus();
     });
