@@ -1,5 +1,6 @@
 import {Entity, Column, PrimaryColumn} from 'typeorm';
 import * as uuid from 'uuid/v4';
+import { autoserialize } from 'cerialize';
 
 @Entity('dummy')
 export class Dummy {
@@ -14,12 +15,17 @@ export class Dummy {
         length: 36,
         nullable: false
     })
+    @autoserialize
     public id: string;
+
     @Column('varchar')
+    @autoserialize
     public name: string;
+
     @Column({
         type: 'varchar',
         nullable: true
     })
+    @autoserialize
     public description: string;
 }

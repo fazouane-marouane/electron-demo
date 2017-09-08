@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
 // tslint:disable-next-line:no-var-requires no-require-imports
 require('./services'); // init services
+require('./data-models'); // init data models
 
 declare global {
   interface NodeModule {

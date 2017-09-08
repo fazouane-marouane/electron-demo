@@ -3,16 +3,22 @@ import { injectable } from 'inversify';
 import { Dummy } from '../../data-models/dummy';
 import { ipcRenderer } from 'electron';
 import * as IPCResponder from 'electron-ipc-responder';
+import { inject } from '../container';
+import { ISerializer, SerializerID  } from '../serializer';
 
 @injectable()
 export class IpcDummyDataAccess implements IDummyDataAccess {
     private ipcResponder: IPCResponder;
+    @inject(SerializerID)
+    private serializer: ISerializer;
     constructor() {
         this.ipcResponder = new IPCResponder(ipcRenderer.send.bind(ipcRenderer), ipcRenderer.on.bind(ipcRenderer));
     }
 
-    sayToHost(name: string, payload?: any): Promise<any> {
-        return this.ipcResponder.ask(`DummyDataAccess#${name}`, payload);
+    async sayToHost(name: string, payload?: any): Promise<any> {
+        const serialized = this.serializer.serialize(payload);
+        const response = await this.ipcResponder.ask(`DummyDataAccess#${name}`, serialized);
+        return this.serializer.deserialize(response);
     }
 
     getAll(): Promise<Dummy[]> {

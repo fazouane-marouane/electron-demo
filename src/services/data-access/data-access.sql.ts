@@ -7,6 +7,7 @@ import * as IPCResponder from 'electron-ipc-responder';
 import {ipcMain} from 'electron';
 import { inject } from '../container';
 import { ILogger, LoggerID  } from '../logger';
+import { ISerializer, SerializerID  } from '../serializer';
 
 const connectionPromise = createConnection({
     type: 'sqlite',
@@ -22,9 +23,14 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     private ipcResponder: IPCResponder;
     @inject(LoggerID)
     private logger: ILogger;
+    @inject(SerializerID)
+    private serializer: ISerializer;
 
     constructor() {
-        this.ipcResponder = new IPCResponder(sendToRendererProcessFromMain, ipcMain.on.bind(ipcMain));
+        const send = (channel: string, data: any) => {
+            return sendToRendererProcessFromMain(channel, this.serializer.serialize(data));
+        };
+        this.ipcResponder = new IPCResponder(send, ipcMain.on.bind(ipcMain));
 
         this.mapCall(this.getAll);
         this.mapCall(this.getOne);
@@ -33,7 +39,12 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     }
 
     mapCall(func: Function) {
-        this.ipcResponder.registerTopic(`DummyDataAccess#${func.name}`, func.bind(this));
+        this.ipcResponder.registerTopic(`DummyDataAccess#${func.name}`,
+            async (payload: { data: object, type: string}) => {
+                const deserialized = this.serializer.deserialize(payload);
+                const result = await func.call(this, deserialized);
+                return this.serializer.serialize(result);
+            });
     }
 
     public async getAll(): Promise<Dummy[]> {
@@ -51,7 +62,7 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     }
     async putOne(data: Dummy): Promise<void> {
         const connection = await connectionPromise;
-        this.logger.info('data.constructor', data, data.constructor);
+        this.logger.info('data.constructor', data, data.constructor ? data.constructor.name : null);
         connection.manager.save(Dummy, data);
     }
 }

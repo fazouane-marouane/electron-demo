@@ -5,6 +5,7 @@ import {install as installDevtron} from 'devtron';
 import { getService, ServicesIDs, ILogger } from './services';
 // tslint:disable-next-line:no-var-requires no-require-imports
 require('./services'); // init services
+require('./data-models'); // init data models
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
