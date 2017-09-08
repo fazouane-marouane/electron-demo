@@ -9,7 +9,7 @@ const isMainProcess: boolean = !!app;
 const container: Container = (isMainProcess
     ? require('./container.main.ts')
     : require('./container.renderer.ts')).default;
-export const { lazyInject} = getDecorators(container);
+export const { lazyInject: inject} = getDecorators(container);
 export function getService<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>): T {
     return container.get<T>(serviceIdentifier);
 }
