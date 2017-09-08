@@ -5,6 +5,8 @@ import { Dummy } from '../../data-models/dummy';
 import { sendToRendererProcessFromMain } from '../helpers';
 import * as IPCResponder from 'electron-ipc-responder';
 import {ipcMain} from 'electron';
+import { inject } from '../container';
+import { ILogger, LoggerID  } from '../logger';
 
 const connectionPromise = createConnection({
     type: 'sqlite',
@@ -18,6 +20,8 @@ const connectionPromise = createConnection({
 @injectable()
 export class SqlDummyDataAccess implements IDummyDataAccess {
     private ipcResponder: IPCResponder;
+    @inject(LoggerID)
+    private logger: ILogger;
 
     constructor() {
         this.ipcResponder = new IPCResponder(sendToRendererProcessFromMain, ipcMain.on.bind(ipcMain));
@@ -47,6 +51,7 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     }
     async putOne(data: Dummy): Promise<void> {
         const connection = await connectionPromise;
+        this.logger.info('data.constructor', data, data.constructor);
         connection.manager.save(Dummy, data);
     }
 }
