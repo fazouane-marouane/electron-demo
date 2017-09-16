@@ -8,6 +8,7 @@ import {ipcMain} from 'electron';
 import { inject } from '../container';
 import { ILogger, LoggerID  } from '../logger';
 import { ISerializer, SerializerID  } from '../serializer';
+require.resolve('sqlite3');
 
 const connectionPromise = createConnection({
     type: 'sqlite',
@@ -62,7 +63,7 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     }
     async putOne(data: Dummy): Promise<void> {
         const connection = await connectionPromise;
-        this.logger.info('data.constructor', data, data.constructor ? data.constructor.name : null);
+        this.logger.info('data.constructor', data, 'yooo', data.constructor ? data.constructor.name : null);
         connection.manager.save(Dummy, data);
     }
 }

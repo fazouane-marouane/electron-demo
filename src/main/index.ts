@@ -1,22 +1,16 @@
 import { app, BrowserWindow } from 'electron';
-import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, REACT_PERF } from 'electron-devtools-installer';
-import { enableLiveReload } from 'electron-compile';
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import {install as installDevtron} from 'devtron';
-import { getService, ServicesIDs, ILogger } from './services';
+import { getService, ServicesIDs, ILogger } from '../services';
+import * as isDevMode from 'electron-is-dev';
 // tslint:disable-next-line:no-var-requires no-require-imports
-require('./services'); // init services
-require('./data-models'); // init data models
+import '../services'; // init services
+import '../data-models'; // init data models
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow | null = null;
 const logger = getService<ILogger>(ServicesIDs.LoggerID);
-
-const isDevMode = process.execPath.match(/[\\/]electron/);
-
-if (isDevMode) {
-  enableLiveReload({strategy: 'react-hmr'});
-}
 
 const createWindow = async () => {
   // Create the browser window.
@@ -26,13 +20,14 @@ const createWindow = async () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  mainWindow.loadURL(isDevMode ?
+    'http://localhost:9080' :
+    `file://${__dirname}/index.html`);
 
   // Open the DevTools.
   if (isDevMode) {
     await installExtension(REACT_DEVELOPER_TOOLS);
     await installExtension(REDUX_DEVTOOLS);
-    await installExtension(REACT_PERF);
     mainWindow.webContents.openDevTools();
     mainWindow.webContents.on('devtools-opened', () => {
       installDevtron();

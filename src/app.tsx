@@ -6,7 +6,7 @@ import {Dummy} from './data-models/dummy';
 
 let counter = 0;
 
-export class App extends React.Component<undefined, undefined> {
+export class App extends React.Component<undefined> {
   @inject(ServicesIDs.LoggerID)
   private logger: ILogger;
 

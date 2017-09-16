@@ -5,10 +5,10 @@
   "description": "My Electron application description",
   "main": "src/index.main.ts",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "postinstall": "install-app-deps",
+    "start": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "package": "npm run compile && electron-builder",
     "lint": "tslint --project tsconfig.json --type-check --force"
   },
   "keywords": [],
@@ -64,19 +64,18 @@
     }
   },
   "dependencies": {
-    "@types/uuid": "^3.4.2",
     "cerialize": "^0.1.16",
     "devtron": "^1.4.0",
-    "electron-compile": "^6.4.1",
     "electron-devtools-installer": "^2.0.1",
     "electron-ipc-responder": "^1.0.4",
+    "electron-is-dev": "^0.3.0",
     "inversify": "^4.3.0",
     "inversify-inject-decorators": "^3.0.1",
     "react": "^15.6.1",
     "react-desktop": "^0.3.1",
     "react-dom": "^15.6.1",
     "reflect-metadata": "^0.1.10",
-    "sqlite3": "^3.1.9",
+    "sqlite3": "^3.1.11",
     "tslib": "^1.4.0",
     "typeorm": "^0.1.0-alpha.37",
     "uuid": "^3.1.0"
@@ -87,11 +86,16 @@
     "@types/react": "^15.5.4",
     "@types/react-dom": "^15.5.4",
     "@types/react-hot-loader": "^3.0.4",
-    "electron-forge": "^4.0.1",
-    "electron-prebuilt-compile": "1.7.5",
+    "@types/uuid": "^3.4.2",
+    "electron": "^1.7.6",
+    "electron-builder": "^19.27.7",
+    "electron-webpack": "^1.5.0",
+    "electron-webpack-ts": "^1.1.2",
     "macos-alias": "^0.2.11",
     "react-hot-loader": "^3.0.0-beta.7",
     "tslint": "^5.1.0",
-    "typescript": "~2.5.2"
+    "typescript": "~2.5.2",
+    "webpack": "^3.6.0",
+    "webpack-build-notifier": "^0.1.16"
   }
 }

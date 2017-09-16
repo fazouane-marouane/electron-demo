@@ -20,7 +20,7 @@
     "pretty": true,
     "target": "es2015",
     "jsx": "react",
-    "typeRoots": ["./node_modules/@types/", "./src/@types/"]
+    "typeRoots": ["./node_modules/@types/", "./typings/"]
   },
   "include": [
     "src/**/*"
