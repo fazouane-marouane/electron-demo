@@ -2,7 +2,11 @@ import {Entity, Column, PrimaryColumn} from 'typeorm';
 import * as uuid from 'uuid/v4';
 import { autoserialize } from 'cerialize';
 
-@Entity('dummy')
+@Entity<Dummy>('dummy', {
+    orderBy: (_) => ({
+        name: 'ASC'
+    })
+})
 export class Dummy {
     static create(): Dummy {
         const data = new Dummy();

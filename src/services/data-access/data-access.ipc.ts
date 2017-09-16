@@ -15,8 +15,8 @@ export class IpcDummyDataAccess implements IDummyDataAccess {
         this.ipcResponder = new IPCResponder(ipcRenderer.send.bind(ipcRenderer), ipcRenderer.on.bind(ipcRenderer));
     }
 
-    async sayToHost(name: string, payload?: any): Promise<any> {
-        const serialized = this.serializer.serialize(payload);
+    async sayToHost(name: string, ...payload: any[]): Promise<any> {
+        const serialized = payload.map(p => this.serializer.serialize(p));
         const response = await this.ipcResponder.ask(`DummyDataAccess#${name}`, serialized);
         return this.serializer.deserialize(response);
     }

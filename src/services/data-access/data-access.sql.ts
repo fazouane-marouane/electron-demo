@@ -40,9 +40,9 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
 
     mapCall(func: Function) {
         this.ipcResponder.registerTopic(`DummyDataAccess#${func.name}`,
-            async (payload: { data: object, type: string}) => {
-                const deserialized = this.serializer.deserialize(payload);
-                const result = await func.call(this, deserialized);
+            async (payload: { data: object, type: string}[]) => {
+                const deserialized = payload.map(p => this.serializer.deserialize(p));
+                const result = await func.apply(this, deserialized);
                 return this.serializer.serialize(result);
             });
     }
