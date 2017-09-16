@@ -1,3 +1,4 @@
+import 'source-map-support';
 import { app, BrowserWindow } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import {install as installDevtron} from 'devtron';

@@ -1,0 +1,4 @@
+appId: "io.practicaljs.stockmanager"
+productName: "stockmanager"
+directories:
+  buildResources: "resources"
