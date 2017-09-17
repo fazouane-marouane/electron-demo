@@ -9,7 +9,7 @@
     "icons": "node resources",
     "start": "electron-webpack dev",
     "compile": "electron-webpack",
-    "package": "npm run compile && electron-builder",
+    "package": "NODE_ENV=production npm run compile && electron-builder",
     "lint": "tslint --project tsconfig.json --type-check --force"
   },
   "keywords": [],

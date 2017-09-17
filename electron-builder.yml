@@ -1,4 +1,11 @@
 appId: "io.practicaljs.stockmanager"
 productName: "stockmanager"
+artifactName: "${productName}-${os}-${arch}-${version}.${ext}"
+asar: true
 directories:
   buildResources: "resources"
+mac:
+  category: productivity
+nsis:
+  perMachine: true
+  oneClick: true

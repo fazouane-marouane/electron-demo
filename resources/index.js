@@ -24,8 +24,9 @@ function raster(dimension, output) {
     );
 }
 
-for (let dimension of [16, 24, 32, 48, 64, 96, 128, 256, 512, 1024]) {
-    raster(dimension, `icons/${dimension}x${dimension}.png`);
+for (let dimension of [16, 32, 128, 256, 512]) {
+    raster(dimension, `icons.iconset/icon_${dimension}x${dimension}.png`);
+    raster(dimension * 2, `icons.iconset/icon_${dimension}x${dimension}@2x.png`);
 }
 raster(256, `icon.png`);
-execSync(`iconutil --convert icns ${join(__dirname, 'icons/1024x1024.png')}`);
+execSync(`iconutil --convert icns --output ${join(__dirname, 'icon.icns')} ${join(__dirname, 'icons.iconset')} `);
