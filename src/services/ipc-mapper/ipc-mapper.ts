@@ -4,8 +4,8 @@ import * as IPCResponder from 'electron-ipc-responder';
 import * as isRenderer from 'is-electron-renderer';
 import { inject } from '../container';
 import { sendToRendererProcessFromMain } from '../helpers';
-import { ISerializer, SerializerID  } from '../serializer';
-import { IIpcMapper } from '.';
+import { ISerializer, SerializerID } from '../serializer';
+import { IIpcMapper, FunctionReturningAPromise } from '.';
 
 @injectable()
 export class IpcMapper implements IIpcMapper {
@@ -23,20 +23,24 @@ export class IpcMapper implements IIpcMapper {
         this.ipcResponder = new IPCResponder(send, on);
     }
 
-    mapCaller<T>(subject: string, service: object, func: (...args: any[]) => Promise<T>): void {
-        service[func.name] = async (...args: any[]) => {
-            const serialized = args.map(p => this.serializer.serialize(p));
-            const response = await this.ipcResponder.ask(`${subject}#${func.name}`, serialized);
-            return this.serializer.deserialize(response);
-        };
+    mapCallers(subject: string, service: object, ...funcs: FunctionReturningAPromise[]): void {
+        for (const func of funcs) {
+            service[func.name] = async (...args: any[]) => {
+                const serialized = args.map(p => this.serializer.serialize(p));
+                const response = await this.ipcResponder.ask(`${subject}#${func.name}`, serialized);
+                return this.serializer.deserialize(response);
+            };
+        }
     }
 
-    mapResponder<T>(subject: string, service: object, func: (...args: any[]) => Promise<T>): void {
-        this.ipcResponder.registerTopic(`${subject}#${func.name}`,
-        async (payload: { data: object, type: string}[]) => {
-            const deserialized = payload.map(p => this.serializer.deserialize(p));
-            const result = await func.apply(service, deserialized);
-            return this.serializer.serialize(result);
-        });
+    mapResponders(subject: string, service: object, ...funcs: FunctionReturningAPromise[]): void {
+        for (const func of funcs) {
+            this.ipcResponder.registerTopic(`${subject}#${func.name}`,
+                async (payload: { data: object, type: string }[]) => {
+                    const deserialized = payload.map(p => this.serializer.deserialize(p));
+                    const result = await func.apply(service, deserialized);
+                    return this.serializer.serialize(result);
+                });
+        }
     }
 }

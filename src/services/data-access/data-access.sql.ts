@@ -24,9 +24,12 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     private ipcMapper: IIpcMapper;
 
     constructor() {
-        for (const op of [this.getAll, this.getOne, this.putOne, this.deleteOne]) {
-            this.ipcMapper.mapResponder<any>('DummyDataAccess', this, op);
-        }
+        this.ipcMapper.mapResponders('DummyDataAccess', this,
+            this.getAll,
+            this.getOne,
+            this.putOne,
+            this.deleteOne
+        );
     }
 
     public async getAll(): Promise<Dummy[]> {

@@ -14,7 +14,7 @@ import { IpcMapper } from '../ipc-mapper/ipc-mapper';
 
 const container = new Container();
 container.bind<ILogger>(LoggerID).to(IpcLogger).inSingletonScope();
-container.bind<IDummyDataAccess>(DummyDataAccessID).to(SqlDummyDataAccess);
+container.bind<IDummyDataAccess>(DummyDataAccessID).to(SqlDummyDataAccess).inSingletonScope();
 container.bind<ISerializer>(SerializerID).to(Serializer).inSingletonScope();
 container.bind<IIpcMapper>(IpcMapperID).to(IpcMapper).inSingletonScope();
 
