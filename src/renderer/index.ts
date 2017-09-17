@@ -7,10 +7,10 @@ import * as isDevMode from 'electron-is-dev';
 if (isDevMode) {
   require('react-hot-loader/patch');
 }
-import '../services'; // init services
-import '../data-models'; // init data models
+import '../common/services'; // init services
+import '../common/data-models'; // init data models
 // tslint:enable
-import { App } from '../app';
+import { App } from './app';
 
 function render() {
   // tslint:disable-next-line:no-require-imports

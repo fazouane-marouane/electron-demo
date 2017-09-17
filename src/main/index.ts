@@ -2,11 +2,11 @@ import 'source-map-support';
 import { app, BrowserWindow } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import {install as installDevtron} from 'devtron';
-import { getService, ServicesIDs, ILogger } from '../services';
+import { getService, ServicesIDs, ILogger } from '../common/services';
 import * as isDevMode from 'electron-is-dev';
 // tslint:disable-next-line:no-var-requires no-require-imports
-import '../services'; // init services
-import '../data-models'; // init data models
+import '../common/services'; // init services
+import '../common/data-models'; // init data models
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

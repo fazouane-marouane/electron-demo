@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Text } from 'react-desktop/macOs';
 import { Tabs } from './components/Tabs';
-import {inject, ILogger, ServicesIDs, Services} from './services';
-import {Dummy} from './data-models/dummy';
+import {inject, ILogger, ServicesIDs, Services} from '../common/services';
+import {Dummy} from '../common/data-models/dummy';
 
 let counter = 0;
 
