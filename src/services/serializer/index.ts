@@ -2,6 +2,7 @@ export type ClassConstructor = new(...args: any[]) => object;
 
 export interface ISerializer {
     registerType(type: ClassConstructor): void;
+    getType(name: string): ClassConstructor | undefined;
 
     deserialize(payload: { data: object, type: string}): object;
 

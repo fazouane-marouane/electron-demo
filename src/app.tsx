@@ -19,7 +19,8 @@ export class App extends React.Component<undefined> {
             'Tab 2': <Text onClick={(async () => {
               const obj = Dummy.create();
               obj.name = `toto${counter++}`;
-              this.logger.info('create', obj, await Services.dummyAccess.putOne(obj));
+              this.logger.info('created', obj);
+              await Services.dummyAccess.putOne(obj);
             })}>Content 2</Text>,
             'Tab 3': (
               <Tabs>

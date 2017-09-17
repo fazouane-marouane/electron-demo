@@ -2,12 +2,9 @@ import { IDummyDataAccess } from '.';
 import { injectable } from 'inversify';
 import { createConnection } from 'typeorm';
 import { Dummy } from '../../data-models/dummy';
-import { sendToRendererProcessFromMain } from '../helpers';
-import * as IPCResponder from 'electron-ipc-responder';
-import {ipcMain} from 'electron';
 import { inject } from '../container';
 import { ILogger, LoggerID  } from '../logger';
-import { ISerializer, SerializerID  } from '../serializer';
+import { IIpcMapper, IpcMapperID  } from '../ipc-mapper';
 require.resolve('sqlite3');
 
 const connectionPromise = createConnection({
@@ -21,31 +18,15 @@ const connectionPromise = createConnection({
 
 @injectable()
 export class SqlDummyDataAccess implements IDummyDataAccess {
-    private ipcResponder: IPCResponder;
     @inject(LoggerID)
     private logger: ILogger;
-    @inject(SerializerID)
-    private serializer: ISerializer;
+    @inject(IpcMapperID)
+    private ipcMapper: IIpcMapper;
 
     constructor() {
-        const send = (channel: string, data: any) => {
-            return sendToRendererProcessFromMain(channel, this.serializer.serialize(data));
-        };
-        this.ipcResponder = new IPCResponder(send, ipcMain.on.bind(ipcMain));
-
-        this.mapCall(this.getAll);
-        this.mapCall(this.getOne);
-        this.mapCall(this.deleteOne);
-        this.mapCall(this.putOne);
-    }
-
-    mapCall(func: Function) {
-        this.ipcResponder.registerTopic(`DummyDataAccess#${func.name}`,
-            async (payload: { data: object, type: string}[]) => {
-                const deserialized = payload.map(p => this.serializer.deserialize(p));
-                const result = await func.apply(this, deserialized);
-                return this.serializer.serialize(result);
-            });
+        for (const op of [this.getAll, this.getOne, this.putOne, this.deleteOne]) {
+            this.ipcMapper.mapResponder<any>('DummyDataAccess', this, op);
+        }
     }
 
     public async getAll(): Promise<Dummy[]> {
@@ -63,7 +44,6 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     }
     async putOne(data: Dummy): Promise<void> {
         const connection = await connectionPromise;
-        this.logger.info('data.constructor', data, 'yooo', data.constructor ? data.constructor.name : null);
         connection.manager.save(Dummy, data);
     }
 }

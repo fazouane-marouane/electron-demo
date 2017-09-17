@@ -1,27 +1,14 @@
-import {Entity, Column, PrimaryColumn} from 'typeorm';
-import * as uuid from 'uuid/v4';
-import { autoserialize } from 'cerialize';
+import { Entity, Column } from 'typeorm';
+import { autoserialize, inheritSerialization } from 'cerialize';
+import { BaseModel} from './base-model';
 
 @Entity('dummy', {
     orderBy: (_) => ({
         name: 'ASC'
     })
 })
-export class Dummy {
-    static create(): Dummy {
-        const data = new Dummy();
-        data.id = uuid();
-        return data;
-    }
-
-    @PrimaryColumn({
-        type: 'varchar',
-        length: 36,
-        nullable: false
-    })
-    @autoserialize
-    public id: string;
-
+@inheritSerialization(BaseModel)
+export class Dummy extends BaseModel {
     @Column('varchar')
     @autoserialize
     public name: string;

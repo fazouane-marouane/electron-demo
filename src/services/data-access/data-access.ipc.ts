@@ -1,36 +1,29 @@
 import { IDummyDataAccess } from '.';
 import { injectable } from 'inversify';
 import { Dummy } from '../../data-models/dummy';
-import { ipcRenderer } from 'electron';
-import * as IPCResponder from 'electron-ipc-responder';
 import { inject } from '../container';
-import { ISerializer, SerializerID  } from '../serializer';
+import { IIpcMapper, IpcMapperID  } from '../ipc-mapper';
 
 @injectable()
 export class IpcDummyDataAccess implements IDummyDataAccess {
-    private ipcResponder: IPCResponder;
-    @inject(SerializerID)
-    private serializer: ISerializer;
+    @inject(IpcMapperID)
+    private ipcMapper: IIpcMapper;
     constructor() {
-        this.ipcResponder = new IPCResponder(ipcRenderer.send.bind(ipcRenderer), ipcRenderer.on.bind(ipcRenderer));
-    }
-
-    async sayToHost(name: string, ...payload: any[]): Promise<any> {
-        const serialized = payload.map(p => this.serializer.serialize(p));
-        const response = await this.ipcResponder.ask(`DummyDataAccess#${name}`, serialized);
-        return this.serializer.deserialize(response);
+        for (const op of [this.getAll, this.getOne, this.putOne, this.deleteOne]) {
+            this.ipcMapper.mapCaller<any>('DummyDataAccess', this, op);
+        }
     }
 
     getAll(): Promise<Dummy[]> {
-        return this.sayToHost(this.getAll.name);
+        return {} as any;
     }
-    getOne(id: string): Promise<Dummy | null> {
-        return this.sayToHost(this.getOne.name, id);
+    getOne(_id: string): Promise<Dummy | null> {
+        return {} as any;
     }
-    deleteOne(id: string): Promise<void> {
-        return this.sayToHost(this.deleteOne.name, id);
+    deleteOne(_id: string): Promise<void> {
+        return {} as any;
     }
-    putOne(data: Dummy): Promise<void> {
-        return this.sayToHost(this.putOne.name, data);
+    putOne(_data: Dummy): Promise<void> {
+        return {} as any;
     }
 }

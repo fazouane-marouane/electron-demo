@@ -10,9 +10,13 @@ export class Serializer implements ISerializer {
         this.registeredTypes.set(type.name, type);
     }
 
+    getType(name: string): ClassConstructor | undefined {
+        return this.registeredTypes.get(name);
+    }
+
     deserialize(payload: { data: object, type: string}): object {
         if (payload.type) {
-            const type = this.registeredTypes.get(payload.type);
+            const type = this.getType(payload.type);
             return Deserialize(payload.data, type);
         }
         return payload.data;
