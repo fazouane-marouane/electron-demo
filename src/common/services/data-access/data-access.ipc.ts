@@ -26,7 +26,7 @@ export class IpcDummyDataAccess implements IDummyDataAccess {
     deleteOne(_id: string): Promise<void> {
         return {} as any;
     }
-    putOne(_data: Dummy): Promise<void> {
+    putOne(_data: Dummy): Promise<Dummy> {
         return {} as any;
     }
 }

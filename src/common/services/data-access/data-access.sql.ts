@@ -5,6 +5,7 @@ import { Dummy } from '../../data-models/dummy';
 import { inject } from '../container';
 import { ILogger, LoggerID  } from '../logger';
 import { IIpcMapper, IpcMapperID  } from '../ipc-mapper';
+import { EntityManagerPromise } from '../../EntityManagerPromise';
 require.resolve('sqlite3');
 
 const connectionPromise = createConnection({
@@ -18,6 +19,7 @@ const connectionPromise = createConnection({
 
 @injectable()
 export class SqlDummyDataAccess implements IDummyDataAccess {
+    private entityManager = new EntityManagerPromise(connectionPromise);
     @inject(LoggerID)
     private logger: ILogger;
     @inject(IpcMapperID)
@@ -33,20 +35,15 @@ export class SqlDummyDataAccess implements IDummyDataAccess {
     }
 
     public async getAll(): Promise<Dummy[]> {
-        const connection = await connectionPromise;
-        return await connection.manager.find(Dummy);
+        return await this.entityManager.find(Dummy);
     }
     async getOne(id: string): Promise<Dummy | null> {
-        const connection = await connectionPromise;
-        const result = await connection.manager.findOneById(Dummy, id);
-        return result || null;
+        return await this.entityManager.findOneById(Dummy, id) || null;
     }
     async deleteOne(id: string): Promise<void> {
-        const connection = await connectionPromise;
-        await connection.manager.removeById(Dummy, id);
+        await await this.entityManager.removeById(Dummy, id);
     }
-    async putOne(data: Dummy): Promise<void> {
-        const connection = await connectionPromise;
-        connection.manager.save(Dummy, data);
+    async putOne(data: Dummy): Promise<Dummy> {
+        return await this.entityManager.save(data);
     }
 }
